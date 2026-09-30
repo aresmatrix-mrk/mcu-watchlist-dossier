@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { 
   Shield, Zap, Skull, Award, CheckCircle, 
-  Circle, Plus, Search, Filter, X, Sparkles, Eye, FileText, Edit3 
+  Circle, Plus, Search, Filter, X, Sparkles, Eye, FileText, Edit3, ExternalLink 
 } from 'lucide-react';
 import { initialMcuData } from './data/mcuData';
 
@@ -97,7 +97,6 @@ export default function App() {
     if (!formData.title || !formData.hero) return;
 
     if (editingMovieId !== null) {
-      // Update existing placeholder to full dossier
       setMovies(prev => prev.map(m => {
         if (m.id === editingMovieId) {
           return {
@@ -110,7 +109,6 @@ export default function App() {
         return m;
       }));
     } else {
-      // Add completely new custom title
       const newMovie = {
         ...formData,
         id: Date.now(),
@@ -132,8 +130,8 @@ export default function App() {
     <div className="min-h-screen bg-[#090A0F] text-slate-100 flex flex-col font-sans">
       {/* Header */}
       <header className="border-b border-[#212433] bg-[#0E1017]/90 sticky top-0 z-30 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center space-x-3">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+          <div className="flex items-center space-x-3 shrink-0">
             <span className="bg-[#E62429] text-white px-2.5 py-1 text-sm font-black tracking-widest uppercase rounded shadow-md shadow-red-950/40">
               MARVEL
             </span>
@@ -142,13 +140,28 @@ export default function App() {
             </span>
           </div>
 
-          <button
-            onClick={openNewBlankForm}
-            className="bg-[#E62429] hover:bg-[#ff2b31] transition text-white px-3.5 py-1.5 rounded-md font-semibold text-sm flex items-center gap-2 shadow-lg shadow-red-900/30"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Create Custom Entry</span>
-          </button>
+          <div className="flex items-center gap-2.5">
+            {/* MarvelWatchlist.com Redirect Link Button */}
+            <a
+              href="https://marvelwatchlist.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-[#171A26] hover:bg-[#202538] text-slate-200 hover:text-white px-3 py-1.5 rounded-md font-semibold text-xs sm:text-sm flex items-center gap-1.5 border border-[#2B3045] transition shadow-sm"
+              title="Open MarvelWatchlist.com official order"
+            >
+              <ExternalLink className="w-3.5 h-3.5 text-[#E62429]" />
+              <span className="hidden md:inline">MarvelWatchlist.com</span>
+              <span className="md:hidden">Watchlist</span>
+            </a>
+
+            <button
+              onClick={openNewBlankForm}
+              className="bg-[#E62429] hover:bg-[#ff2b31] transition text-white px-3 py-1.5 rounded-md font-semibold text-xs sm:text-sm flex items-center gap-1.5 shadow-lg shadow-red-900/30"
+            >
+              <Plus className="w-4 h-4" />
+              <span>Create Entry</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -156,15 +169,29 @@ export default function App() {
       <main className="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-6">
         {/* Banner */}
         <div className="relative rounded-2xl overflow-hidden border border-[#212433] bg-gradient-to-r from-[#17080a] via-[#10131e] to-[#0d0e14] p-6 sm:p-8">
-          <div className="relative z-10 max-w-2xl space-y-3">
-            <div className="inline-flex items-center gap-2 text-xs font-bold text-[#E62429] uppercase tracking-widest bg-red-950/40 border border-red-800/50 px-2.5 py-1 rounded">
-              <Sparkles className="w-3.5 h-3.5" /> S.H.I.E.L.D. Complete Chronological Database
+          <div className="relative z-10 max-w-3xl space-y-3">
+            <div className="flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-2 text-xs font-bold text-[#E62429] uppercase tracking-widest bg-red-950/40 border border-red-800/50 px-2.5 py-1 rounded">
+                <Sparkles className="w-3.5 h-3.5" /> S.H.I.E.L.D. Chronological Database
+              </div>
+              
+              {/* Secondary link chip in banner */}
+              <a
+                href="https://marvelwatchlist.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-xs text-slate-300 hover:text-white bg-white/5 hover:bg-white/10 px-2.5 py-1 rounded border border-white/10 transition"
+              >
+                <span>Based on MarvelWatchlist.com order</span>
+                <ExternalLink className="w-3 h-3 text-[#E62429]" />
+              </a>
             </div>
+
             <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-white uppercase">
               MCU Master Timeline Tracker
             </h1>
             <p className="text-slate-400 text-sm sm:text-base leading-relaxed">
-              Watched entries feature comprehensive intelligence dossiers. Unwatched films and series are queued chronologically—click <strong>Create Dossier Card</strong> on any item to log its intelligence.
+              Watched entries feature full intelligence dossiers. The remaining films and shows follow the complete chronological watch order—click <strong>Create Dossier Card</strong> on any item to log hero powers, antagonists, and sequel upgrades.
             </p>
           </div>
         </div>
@@ -212,7 +239,7 @@ export default function App() {
         {/* Card Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredMovies.map((movie) => {
-            // CARD VARIANT 1: FULL DOSSIER CARD (FOR WATCHED TITLES OR FILLED DOSSIERS)
+            // CARD VARIANT 1: FULL DOSSIER CARD
             if (movie.hasDossier) {
               return (
                 <div
@@ -301,7 +328,7 @@ export default function App() {
               );
             }
 
-            // CARD VARIANT 2: UNWATCHED PLACEHOLDER CARD (NAME ONLY)
+            // CARD VARIANT 2: UNWATCHED PLACEHOLDER CARD
             return (
               <div
                 key={movie.id}
@@ -354,6 +381,22 @@ export default function App() {
           })}
         </div>
       </main>
+
+      {/* Footer with Attribution and Link */}
+      <footer className="border-t border-[#1E2230] py-6 px-4 bg-[#0A0B10] text-center text-xs text-slate-500 space-y-2">
+        <p>
+          MCU Watchlist and Hero Dossier Database • Chronological ordering referenced from{' '}
+          <a
+            href="https://marvelwatchlist.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-slate-400 hover:text-[#E62429] underline inline-flex items-center gap-1"
+          >
+            MarvelWatchlist.com <ExternalLink className="w-3 h-3" />
+          </a>
+        </p>
+        <p className="text-[11px] text-slate-600">Marvel Cinematic Universe characters and imagery are property of Marvel Studios & Disney.</p>
+      </footer>
 
       {/* Full Dossier Modal */}
       {activeModalMovie && (
