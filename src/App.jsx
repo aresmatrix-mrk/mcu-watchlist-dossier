@@ -155,6 +155,17 @@ export default function App() {
             </a>
 
             <button
+            onClick={() => {
+                alert("Timeline checks run automatically via GitHub Actions every week. You can also trigger an immediate check in your repo's Actions tab under 'Check & Sync MCU Watchlist'.");
+              }}
+              className="bg-[#171A26] hover:bg-[#202538] text-slate-300 hover:text-white px-2.5 py-1.5 rounded-md text-xs border border-[#2B3045] flex items-center gap-1.5 transition"
+              title="Sync timeline status"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <span className="hidden sm:inline">Auto-Sync Active</span>
+            </button>
+            
+            <button
               onClick={openNewBlankForm}
               className="bg-[#E62429] hover:bg-[#ff2b31] transition text-white px-3 py-1.5 rounded-md font-semibold text-xs sm:text-sm flex items-center gap-1.5 shadow-lg shadow-red-900/30"
             >
